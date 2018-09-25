@@ -217,6 +217,9 @@ class SfpUtilBase(object):
 
             sysfs_sfp_i2c_client_eeprom_path = "%s/eeprom" % sysfs_sfp_i2c_client_path
 
+        if devid == self.DOM_EEPROM_ADDR :
+            sysfs_sfp_i2c_client_eeprom_path = sysfs_sfp_i2c_client_eeprom_path.replace("-0050", "-0051")
+            
         if not self._sfp_eeprom_present(sysfs_sfp_i2c_client_eeprom_path, offset):
             return None
 
@@ -225,7 +228,7 @@ class SfpUtilBase(object):
             sysfsfile_eeprom.seek(offset)
             raw = sysfsfile_eeprom.read(num_bytes)
         except IOError:
-            print "Error: reading sysfs file %s" % sysfs_sfp_i2c_client_eeprom_path
+            print("Error: reading sysfs file %s for port %s" % (sysfs_sfp_i2c_client_eeprom_path, port_num))            
             return None
 
         try:
